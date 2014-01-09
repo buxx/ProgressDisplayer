@@ -8,6 +8,9 @@ l'on a besoin d'éxecuter une longue tache tout en tenant informé l'utilisateur
 
 ## Exemple
 
+Exemple pour un script en CLI. LE fonctionnement est le même pour un script 
+dérrière un serveur Web, sauf qu'il faut utiliser la classe ProgressDisplayer.
+
 ``` php
 <?php
 require_once 'CommandProgressDisplayer.php';
@@ -31,3 +34,6 @@ for ($etape_count = 1; $etape_count <= 6; $etape_count++)
 
 $progress->message('Terminé !');
 ```
+
+Rendu:
+![screenshot](https://raw2.github.com/buxx/ProgressDisplayer/master/ProgressDisplayer.png)
