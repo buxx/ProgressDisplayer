@@ -36,8 +36,11 @@ class ProgressDisplayer
   
   protected function flush()
   {
-    flush();
-    ob_flush();
+    if (ob_get_contents())
+    {
+      flush();
+      ob_flush();
+    }
   }
   
   public function initialyze($count, $message = Null, $color = self::STANDART, $break_line = True)
@@ -57,12 +60,28 @@ class ProgressDisplayer
     if (!$this->active)
       return;
     
-    $this->step++;
+    $this->incrementStep();
     if ($message)
       $this->message($message, $color, $break_line);
     $this->flush();
+    $this->cleanStep();
   }
   
+  protected function incrementStep()
+  {
+    $this->step++;
+  }
+  
+  protected function cleanStep()
+  {
+    if ($this->step == $this->count)
+    {
+      $this->step = 0;
+      $this->count = Null;
+    }
+  }
+  
+  // TODO: Nettoyer la fonction
   public function message($message, $color = self::STANDART, $break_line = True)
   {
     if (!$this->active)
@@ -76,16 +95,19 @@ class ProgressDisplayer
       $step = "($this->step/$this->count) ";
       if ($this->step === 0)
         $step = "($this->count) ";
-      if ($this->step === $this->count)
+      if ($this->count === Null)
         $step = '';
       $break = '';
       if ($break_line)
+      {
         $break = $this->break;
+      }
       else
       {
         $step = '';
         $spaces = '';
       }
+      
       echo $break.$spaces.$step.$this->colorMessage($message, $color);
     }
     $this->flush();
@@ -130,6 +152,10 @@ class ProgressDisplayer
     
     echo $this->break;
     $this->flush();
+  }
+  
+  public function __destruct() {
+    $this->breakLine();
   }
   
 }

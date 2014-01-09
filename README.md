@@ -23,13 +23,23 @@ require_once 'CommandProgressDisplayer.php';
 $progress = new CommandProgressDisplayer();
 
 $progress->message('Execution de la procédure "Démo"', CommandProgressDisplayer::INFO);
-$progress->initialyze(6, "Etapes à effectuer: 6");
 
-for ($etape_count = 1; $etape_count <= 6; $etape_count++)
+$progress->initialyze(3, "Etapes à effectuer: 3");
+$progress->breakLine();
+
+for ($etape_count = 1; $etape_count <= 3; $etape_count++)
 {
+  $progress->breakLine();
   $progress->next("Execution de l'étape $etape_count ... ");
   sleep(1);
   $progress->message("Ok", CommandProgressDisplayer::SUCCESS, False);
+  
+  $progress->setSub('subtask');
+  for ($subtask_count = 1; $subtask_count <= 2; $subtask_count++)
+  {
+    $progress->getSub('subtask')->message("Execution d'une sous-tache");
+  }
+  
 }
 
 $progress->message('Terminé !');
