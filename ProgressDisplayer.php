@@ -27,7 +27,8 @@ class ProgressDisplayer
     'info' => 'blue',
   );
   
-  protected $subs;
+  protected $subs = array();
+  protected $errors = array();
   
   public function __construct($active = True)
   {
@@ -155,7 +156,49 @@ class ProgressDisplayer
   }
   
   public function __destruct() {
+    $this->displayErrors();
     $this->breakLine();
+  }
+  
+  public function successDot()
+  {
+    $this->message('.', self::SUCCESS, False);
+  }
+  
+  public function error($error = Null)
+  {
+    $this->message('ERROR', self::ERROR, False);
+    if ($error)
+      $this->errors[] = $error;
+  }
+  
+  public function displayErrors()
+  {
+    if (count($this->errors))
+    {
+      $this->breakLine();
+      $this->setSub('__errors')->initialyze(count($this->errors), 'Errors detail', self::ERROR);
+      foreach ($this->errors as $error)
+      {
+        if (is_a($error, 'Exception'))
+        {
+          $this->getSub('__errors')->next('Caught exception: '. $error->getMessage());
+          $this->getSub('__errors')->displayTraceError($error, $this->getSub('__errors'));
+          //$this->getSub('__errors')->message($error->getTraceAsString())
+        }
+        else
+          $this->getSub('__errors')->next($error);
+      }
+    }
+  }
+  
+  protected function displayTraceError(Exception $exception, ProgressDisplayer $displayer)
+  {
+    $displayer->setSub('__trace')->initialyze(count($exception->getTrace())+1, 'Trace');
+    foreach (explode("\n", $exception->getTraceAsString()) as $trace)
+    {
+      $displayer->getSub('__trace')->next($trace);
+    }
   }
   
 }

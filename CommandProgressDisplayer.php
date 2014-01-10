@@ -10,7 +10,7 @@ class CommandProgressDisplayer extends ProgressDisplayer
   
   protected $color_model = "\e[%s%s\e[0m";
   protected $colors = array(
-    'std' => '1;34m',
+    'std' => '1;00m',
     'success' => '1;32m',
     'error' => '1;31m',
     'info' => '1;36m',
