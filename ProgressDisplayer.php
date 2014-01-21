@@ -18,6 +18,7 @@ class ProgressDisplayer
   public    $sub_level = 0;
   protected $sub_space = "_";
   protected $sub_space_model = "<span>%s </span>";
+  protected $initial_insert = "<style>body {word-wrap: break-word;}</style>";
   
   protected $color_model = "<span style=\"color: %s;\">%s</span>";
   protected $colors = array(
@@ -30,9 +31,11 @@ class ProgressDisplayer
   protected $subs = array();
   protected $errors = array();
   
-  public function __construct($active = True)
+  public function __construct($active = True, $initial_insert = True)
   {
     $this->active = $active;
+    if ($this->initial_insert && $initial_insert)
+      echo $this->initial_insert;
   }
   
   protected function flush()
@@ -133,7 +136,7 @@ class ProgressDisplayer
   public function setSub($sub_id)
   {
     $progress_class = get_class($this);
-    $this->subs[$sub_id] = new $progress_class($this->active);
+    $this->subs[$sub_id] = new $progress_class($this->active, False);
     $this->subs[$sub_id]->sub_level = $this->sub_level+1;
     return $this->getSub($sub_id);
   }

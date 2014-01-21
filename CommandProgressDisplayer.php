@@ -7,6 +7,7 @@ class CommandProgressDisplayer extends ProgressDisplayer
   protected $break = "\n";
   protected $sub_space = "...";
   protected $sub_space_model = "%s";
+  protected $initial_insert = Null;
   
   protected $color_model = "\e[%s%s\e[0m";
   protected $colors = array(
