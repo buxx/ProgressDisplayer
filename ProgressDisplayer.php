@@ -19,6 +19,7 @@ class ProgressDisplayer
   protected $sub_space = "_";
   protected $sub_space_model = "<span>%s </span>";
   protected $initial_insert = "<style>body {word-wrap: break-word;}</style>";
+  protected $silent = False;
   
   protected $color_model = "<span style=\"color: %s;\">%s</span>";
   protected $colors = array(
@@ -31,10 +32,17 @@ class ProgressDisplayer
   protected $subs = array();
   protected $errors = array();
   
-  public function __construct($active = True, $initial_insert = True)
+  /**
+   * 
+   * @param boolean $active
+   * @param boolean $initial_insert
+   * @param boolean $silent
+   */
+  public function __construct($active = True, $initial_insert = True, $silent = False)
   {
+    $this->silent = $silent;
     $this->active = $active;
-    if ($this->initial_insert && $initial_insert)
+    if ($this->initial_insert && $initial_insert && !$this->silent)
       echo $this->initial_insert;
   }
   
@@ -55,7 +63,7 @@ class ProgressDisplayer
     $this->count = $count;
     
     if ($message)
-      $this->message ($message, $color, $break_line);
+      $this->message($message, $color, $break_line);
     $this->flush();
   }
   
@@ -88,7 +96,7 @@ class ProgressDisplayer
   // TODO: Nettoyer la fonction
   public function message($message, $color = self::STANDART, $break_line = True)
   {
-    if (!$this->active)
+    if ($this->silent || !$this->active)
       return;
     
     if ($message)
@@ -136,7 +144,7 @@ class ProgressDisplayer
   public function setSub($sub_id)
   {
     $progress_class = get_class($this);
-    $this->subs[$sub_id] = new $progress_class($this->active, False);
+    $this->subs[$sub_id] = new $progress_class($this->active, False, $this->silent);
     $this->subs[$sub_id]->sub_level = $this->sub_level+1;
     return $this->getSub($sub_id);
   }
@@ -151,7 +159,7 @@ class ProgressDisplayer
   
   public function breakLine()
   {
-    if (!$this->active)
+    if (!$this->active || $this->silent)
       return;
     
     echo $this->break;
@@ -177,10 +185,12 @@ class ProgressDisplayer
   
   public function displayErrors()
   {
+    $this->silent = False;
+    
     if (count($this->errors))
     {
       $this->breakLine();
-      $this->setSub('__errors')->initialyze(count($this->errors), 'Errors detail', self::ERROR);
+      $this->setSub('__errors')->initialyze(count($this->errors), 'Some errors has been catcheds:', self::ERROR);
       foreach ($this->errors as $error)
       {
         if (is_a($error, 'Exception'))

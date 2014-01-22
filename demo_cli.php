@@ -54,17 +54,43 @@ $progress->message('Execution de la procédure "Démo à point avec Erreur"', Co
 $progress->breakLine();
 for ($etape_count = 1; $etape_count <= 100; $etape_count++)
 {
-  
+
   try {
-    
+
     if ($etape_count == 20 || $etape_count == 70)
       throw new Exception('Hello world, we have a problem !');
-    
+
     $progress->successDot();
   } catch (Exception $ex) {
     $progress->error($ex);
   }
-  
+
+  usleep(10000);
+}
+
+$progress->message('Terminé !');
+
+
+/////////////////
+
+
+$progress = new CommandProgressDisplayer($active = True, $initial_insert = False, $silent = True);
+
+$progress->message('Execution de la procédure "Démo silencieuse avec Erreur"', CommandProgressDisplayer::INFO);
+$progress->breakLine();
+for ($etape_count = 1; $etape_count <= 100; $etape_count++)
+{
+
+  try {
+
+    if ($etape_count == 20 || $etape_count == 70)
+      throw new Exception('Hello world, we have a problem !');
+
+    $progress->successDot();
+  } catch (Exception $ex) {
+    $progress->error($ex);
+  }
+
   usleep(10000);
 }
 
