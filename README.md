@@ -86,3 +86,9 @@ $progress->message('Terminé !');
 
 Rendu:
 ![screenshot](https://raw2.github.com/buxx/ProgressDisplayer/master/ProgressDisplayer.png)
+
+## Autre
+
+Il est posible d'utiliser le ProgressDisplayer en mode silencieux: Si vous passez le paramètre
+$silent à True lors de la construction, celui-ci n'affichera rien hormis les erreurs
+en fin de procédure.
