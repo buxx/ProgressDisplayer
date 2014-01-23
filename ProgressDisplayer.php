@@ -11,6 +11,7 @@ class ProgressDisplayer
   const ERROR = 'error';
   const INFO = 'info';
   
+  public $coloration = True;
   protected $active;
   protected $count;
   protected $step = 0;
@@ -138,7 +139,9 @@ class ProgressDisplayer
   
   protected function colorMessage($message, $color)
   {
-    return sprintf($this->color_model, $this->colors[$color], $message);
+    if ($this->coloration)
+      return sprintf($this->color_model, $this->colors[$color], $message);
+    return $message;
   }
   
   public function setSub($sub_id)
