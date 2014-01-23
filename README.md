@@ -93,4 +93,4 @@ Rendu:
 $silent à True lors de la construction, celui-ci n'affichera rien hormis les erreurs
 en fin de procédure.
 
- * Pour désactiver la couleur, passez la propriété publique $coloration à False
+ * Pour désactiver la couleur, passez $coloration a False lors de la construction.

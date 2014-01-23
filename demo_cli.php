@@ -33,7 +33,7 @@ $progress->message('Terminé !');
 /////////////////
 
 
-$progress = new CommandProgressDisplayer();
+$progress = new CommandProgressDisplayer($active = True, $initial_insert = True, $silent = False, $coloration = False);
 
 $progress->message('Execution de la procédure "Démo à point"', CommandProgressDisplayer::INFO);
 $progress->breakLine();
