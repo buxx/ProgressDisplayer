@@ -15,5 +15,6 @@ class CommandProgressDisplayer extends ProgressDisplayer
     'success' => '1;32m',
     'error' => '1;31m',
     'info' => '1;36m',
+    'notice' => '1;33m',
   );
 }

@@ -10,6 +10,7 @@ class ProgressDisplayer
   const SUCCESS = 'success';
   const ERROR = 'error';
   const INFO = 'info';
+  const NOTICE = 'notice';
   
   protected $coloration = True;
   protected $active;
@@ -28,10 +29,12 @@ class ProgressDisplayer
     'success' => 'green',
     'error' => 'red',
     'info' => 'blue',
+    'notice' => 'Highlight'
   );
   
   protected $subs = array();
   protected $errors = array();
+  protected $notices = array();
   
   /**
    * 
@@ -172,6 +175,7 @@ class ProgressDisplayer
   
   public function __destruct() {
     $this->displayErrors();
+    $this->displayNotices();
     $this->breakLine();
   }
   
@@ -187,8 +191,16 @@ class ProgressDisplayer
       $this->errors[] = $error;
   }
   
+  public function notice($notice = Null)
+  {
+    $this->message('N', self::NOTICE, False);
+    if ($notice)
+      $this->notices[] = $notice;
+  }
+  
   public function displayErrors()
   {
+    $previous_silent = $this->silent;
     $this->silent = False;
     
     if (count($this->errors))
@@ -201,10 +213,25 @@ class ProgressDisplayer
         {
           $this->getSub('__errors')->next('Caught exception: '. $error->getMessage());
           $this->getSub('__errors')->displayTraceError($error, $this->getSub('__errors'));
-          //$this->getSub('__errors')->message($error->getTraceAsString())
         }
         else
           $this->getSub('__errors')->next($error);
+      }
+    }
+    
+    $this->silent = $previous_silent;
+  }
+  
+  // TODO: Refactoriser avec error, puis ajouter warning
+  public function displayNotices()
+  {
+    if (count($this->notices))
+    {
+      $this->breakLine();
+      $this->setSub('__notices')->initialyze(count($this->notices), 'Some notices has been declareds:', self::NOTICE);
+      foreach ($this->notices as $notice)
+      {
+        $this->getSub('__notices')->next($notice);
       }
     }
   }
