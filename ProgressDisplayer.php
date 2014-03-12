@@ -46,7 +46,7 @@ class ProgressDisplayer
   {
     $this->silent = $silent;
     $this->active = $active;
-    if ($this->initial_insert && $initial_insert && !$this->silent)
+    if ($this->initial_insert && $initial_insert && !$this->silent && $active)
       echo $this->initial_insert;
     $this->coloration = $coloration;
   }
