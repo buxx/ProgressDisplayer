@@ -186,6 +186,11 @@ class ProgressDisplayer
   
   public function error($error = Null)
   {
+    if (is_a($error, 'Exception') && !$this->active)
+    {
+      throw $error;
+    }
+    
     $this->message('ERROR', self::ERROR, False);
     if ($error)
       $this->errors[] = $error;
