@@ -85,7 +85,7 @@ $progress->message('Terminé !');
 ```
 
 Rendu:
-![screenshot](https://raw2.github.com/buxx/ProgressDisplayer/master/ProgressDisplayer.png)
+![screenshot](https://raw.githubusercontent.com/buxx/ProgressDisplayer/master/ProgressDisplayer.png)
 
 ## Autre
 
